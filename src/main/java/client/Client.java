@@ -28,6 +28,7 @@ import constants.id.MapId;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
+import jni.CosmicJNI;
 import net.PacketHandler;
 import net.PacketProcessor;
 import net.netty.InvalidPacketHeaderException;
@@ -131,6 +132,7 @@ public class Client extends ChannelInboundHandlerAdapter {
     private long lastNpcClick;
     private long lastPacket = System.currentTimeMillis();
     private int lang = 0;
+    private CosmicJNI jni = new CosmicJNI();
 
     public enum Type {
         LOGIN,
@@ -185,10 +187,13 @@ public class Client extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
         if (!(msg instanceof InPacket packet)) {
             log.warn("Received invalid message: {}", msg);
             return;
         }
+
+        jni.log("Channel read packet");
 
         short opcode = packet.readShort();
         final PacketHandler handler = packetProcessor.getHandler(opcode);

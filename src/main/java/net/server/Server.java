@@ -37,6 +37,7 @@ import constants.inventory.ItemConstants;
 import constants.net.OpcodeConstants;
 import constants.net.ServerConstants;
 import database.note.NoteDao;
+import jni.CosmicJNI;
 import net.ChannelDependencies;
 import net.PacketProcessor;
 import net.netty.LoginServer;
@@ -134,6 +135,8 @@ public class Server {
     private boolean online = false;
     public static long uptime = System.currentTimeMillis();
 
+    private CosmicJNI jni = new CosmicJNI();
+
     private Server() {
         ReadWriteLock worldLock = new ReentrantReadWriteLock(true);
         this.wldRLock = worldLock.readLock();
@@ -142,6 +145,8 @@ public class Server {
         ReadWriteLock loginLock = new ReentrantReadWriteLock(true);
         this.lgnRLock = loginLock.readLock();
         this.lgnWLock = loginLock.writeLock();
+
+        jni.log("Initialized server");
     }
 
     public int getCurrentTimestamp() {
