@@ -4,6 +4,8 @@
 /target
 
 # build files
+.build
+.swiftpm
 /build/
 /dist/
 /nbproject/
